@@ -1,37 +1,53 @@
-import { StyleSheet, Text, View } from 'react-native'
-import { PageSlider } from '@pietile-native-kit/page-slider';
+import { StyleSheet, Text, View, FlatList } from 'react-native'
 import React, { useState } from 'react'
 import CardProducSlider from './CardProducSlider';
 
 const SliderProducts = () => {
 	const [selectedPage, setSelectedPage] = useState(0);
 
+	const DATA = [
+		{
+			id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+			title: 'First Item',
+		},
+		{
+			id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+			title: 'Second Item',
+		},
+
+	];
+
+	const Item = ({ title }) => (
+		<View style={styles.item}>
+			<Text style={styles.title}>{title}</Text>
+		</View>
+	);
+
+	const renderItem = ({ item }) => (
+		<Item title={item.title} />
+	);
+
 	return (
+
 		<View>
 			<View style={styles.headerSlider}>
 				<Text style={styles.title}>Popular</Text>
 			</View>
-			<CardProducSlider
-				price="75.50"
-				title="Air Max 270 G"
-				subTitle="Top of the month"
-				like={true}
-			/>
-			<PageSlider
-				style={styles.pageSlider}
-				selectedPage={selectedPage}
-				onCurrentPageChange={setSelectedPage}
-			>
-				<View style={[styles.page, { backgroundColor: 'red' }]}>
-					<Text>1</Text>
-				</View>
-				<View style={[styles.page, { backgroundColor: 'orange' }]}>
-					<Text>2</Text>
-				</View>
-				<View style={[styles.page, { backgroundColor: 'yellow' }]}>
-					<Text>3</Text>
-				</View>
-			</PageSlider>
+			<View>
+				<FlatList
+					data={DATA}
+					horizontal={true}
+					renderItem={() => (
+						<CardProducSlider
+							price="75.50"
+							title="Air Max 270 G"
+							subTitle="Top of the month"
+							like={true}
+						/>
+					)}
+					keyExtractor={item => item.id}
+				/>
+			</View>
 		</View>
 	)
 }
@@ -48,11 +64,5 @@ const styles = StyleSheet.create({
 	},
 	pageSlider: {
 		width: '100%',
-	},
-	page: {
-		alignItems: 'center',
-		height: 128,
-		justifyContent: 'center',
-		padding: 16,
 	},
 })
